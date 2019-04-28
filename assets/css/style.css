@@ -12,9 +12,10 @@ h1 {
     margin-left: 50px;
 }
 
-button, .add-gify{
+button, #addGif{
     margin: 13px 12px 12px 10px;
-    background-color: lightgreen;
+    background-color: lightgreen !important;
     color: #ffffff;
 
   }
+

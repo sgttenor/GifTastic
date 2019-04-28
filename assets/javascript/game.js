@@ -1,104 +1,113 @@
-var topics = ["Huskies", "Cats", "Gold Fish", "Boardgames",];
-
-
-
-
-function displayGifs() {
-
-  var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topics + "&api_key=HT6SwO59aGj113uijt623dftR6o7lRRt&limit=5";
-  var topics = $(this).attr("data-name");
-  // Creating an AJAX call for the specific movie button being clicked
-  $.ajax({
-    url: queryURL,
-    method: "GET"
-  }).then(function (response) {
-    var results = response.data;
-    console.log(response);
-    $("#gify-view").empty();
-
-    if (results === "") {
-      alert("There isn't a gif associated with this search");
-    }
-
-    // Looping over every result item
-    for (var i = 0; i < results.length; i++) {
-
-      // Only taking action if the photo has an appropriate rating
-      var gifDiv = $("<div> class 'gifDiv");
-      var gifRating = $("<p>").text("Rating: " + results[i].rating);
-      gifDiv.append(gifRating);
-      // pulling gif
-      var gifImage = $("<img>");
-      gifImage.attr("src", results[i].images.fixed_height_small_still.url); // still image stored into src of image
-      gifImage.attr("data-still",results[i].images.fixed_height_small_still.url); // still image
-      gifImage.attr("data-animate",results[i].images.fixed_height_small.url); // animated image
-      gifImage.attr("data-state", "still"); // set the image state
-      gifImage.addClass("image");
-      gifDiv.append(gifImage);
-      // pulling still image of gif
-      // adding div of gifs to gifsView div
-      $("#gify-view").prepend(gifDiv);
+$(document).ready(function () {
+  // An array of actions, new actions will be pushed into this array;
+  var topics = ["Huskies", "Cats", "Birds", "Fish"];
+  // Creating Functions & Methods
+  // Function that displays all gif buttons
   
-    }
-  });
+  function displayInfo() {
+    var topic = $(this).attr("data-name");
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topic  + "&api_key=HT6SwO59aGj113uijt623dftR6o7lRRt&limit=5";
+
+    //use AJAX to GET information on sport button clicked
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).done(function(response) {
+
+        //empty sports div so new selection appends to emtpy div - do not want previous searches listed
+
+        $("#gifs").empty();
+
+        var results = response.data;
+
+        //user for loop to grab the rating information and appropriate gif for button clicked into its own div to keep information together
+
+        for (var i = 0; i < results.length; i++) {
+            var gifDiv = $("<div class='userSport'>");
+
+            //make variable for rating for clean appending
+
+            var rating = results[i].rating;
+            var pRate = $("<p>").text("Rating: " + rating);
+
+            //make variables for still url and animated url for clean build
+
+            var urlStill = results[i].images.fixed_height_still.url;
+            var urlPlay = results[i].images.fixed_height.url;
+
+            //gif needs still source to load, and data attributes to store the still and animated gifs for pausing function
+
+            var gif = $("<img>").addClass("gif").attr("src", urlStill).attr("data-still", urlStill).attr("data-animate", urlPlay).attr("data-state", "still");
+
+            //append the gif and rating to the new div created during for loop
+
+            gifDiv.append(gif);
+            gifDiv.append(pRate);
+
+            //append all for loop created divs to the DOM
+
+            $("#gifs").append(gifDiv);
+        }
+
+        //on click of gif still image, gif will play. When clicked again, gif will pause.
+
+        $(".gif").on("click", function() {
+            var state = $(this).attr("data-state");
+
+            if (state === "still") {
+                $(this).attr("src", $(this).attr("data-animate"));
+                $(this).attr("data-state", "animate");
+            } else {
+                $(this).attr("src", $(this).attr("data-still"));
+                $(this).attr("data-state", "still");
+            }
+
+        });
+    });
+
 }
 
+//create buttons out of array indexes - gets information from JSON
 
-// Function for displaying movie data
 function renderButtons() {
 
-  // Deleting the movies prior to adding new movies
-  // (this is necessary otherwise you will have repeat buttons)
-  $("#buttons-view").empty();
- 
+    //delete original array of buttons everytime renders so they do not keep repeating
 
-  // Looping through the array of movies
-  for (var i = 0; i < topics.length; i++) {
+    $("#gifButtons").empty();
 
-    // Then dynamicaly generating buttons for each movie in the array
-    // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
-    var buttonGif = $("<button>");
-    // Adding a class of movie-btn to our button
-    buttonGif.addClass("gify-btn");
-    
-    buttonGif.text(topics[i]);
-    // Adding the button to the buttons-view div
-    $("#buttons-view").append(buttonGif);
-  }
+    //loop through array
 
+    for (var i = 0; i < topics.length; i++) {
+
+        var gifRender = $("<button>");
+
+        //add class and attribute of name so display function knows what to GET.
+
+        gifRender.addClass("topic");
+        gifRender.attr("data-name", topics[i]);
+        gifRender.text(topics[i]);
+        $("#gifButtons").append(gifRender);
+    }
 }
 
-        $("#add-gify").on("click", function (event) {
-          event.preventDefault();
-          // This line grabs the input from the textbox
-          var topic = $("#gify-input").val().trim();
-        
-          // Adding movie from the textbox to our array
-          topics.push(topic);
-        
-          // Calling renderButtons which handles the processing of our movie array
-          renderButtons();
+//on click event to add an additional sport button when submitted - push input to array.
+
+$("#addGif").on("click", function(event) {
+    event.preventDefault();
+    var sport = $("#gif-input").val().trim();
+
+    //push input to original topics array and then rerun render of buttons to show newly added button.
+    topics.push(sport);
+        $("#gif-input").val(" ");
+    renderButtons();
 });
 
-// This function handles events where a movie button is clicked
 
-//$(".gif").on("click", function() {
-  // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
-  //var state = $(this).attr("data-state");
-  // If the clicked image's state is still, update its src attribute to what its data-animate value is.
-  // Then, set the image's data-state to animate
-  // Else set src to the data-still value
-  //if (state === "still") {
-   // $(this).attr("src", $(this).attr("data-animate"));
-   // $(this).attr("data-state", "animate");
-  //} else {
-  //  $(this).attr("src", $(this).attr("data-still"));
-  //  $(this).attr("data-state", "still");
-  //}
-//});
+//on click entire document to cover all elements named "sport" and run display function
+$(document).on("click", ".topic", displayInfo);
 
-// Adding a click event listener to all elements with a class of "movie-btn"
-$(document).on("click", ".gify-btn", displayGifs);
-
-// Calling the renderButtons function to display the intial buttons
+//run function to display all buttons on startup
 renderButtons();
+
+});
