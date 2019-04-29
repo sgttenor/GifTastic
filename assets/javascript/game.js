@@ -6,7 +6,7 @@ $(document).ready(function () {
 
   function displayInfo() {
     var topic = $(this).attr("data-name");
-    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=HT6SwO59aGj113uijt623dftR6o7lRRt&limit=5";
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=HT6SwO59aGj113uijt623dftR6o7lRRt&limit=10";
 
     //use AJAX to GET information on sport button clicked
 
