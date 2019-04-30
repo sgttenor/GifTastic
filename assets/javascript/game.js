@@ -1,4 +1,4 @@
-$(document).ready(function () {
+
   // An array of actions, new actions will be pushed into this array;
   var topics = ["Huskies", "Cats", "Birds", "Fish", "Wolves",];
   // Creating Functions & Methods
@@ -109,4 +109,3 @@ $(document).ready(function () {
   //run function to display all buttons on startup
   renderButtons();
 
-});
