@@ -15,7 +15,7 @@
       method: "GET"
     }).done(function (response) {
 
-      //empty sports div so new selection appends to emtpy div - do not want previous searches listed
+      //empty gif div so new selection appends to emtpy div - do not want previous searches listed
 
       $("#gifs").empty();
 
