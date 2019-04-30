@@ -94,16 +94,15 @@
 
   $("#addGif").on("click", function (event) {
     event.preventDefault();
-    var sport = $("#gif-input").val().trim();
 
     //push input to original topics array and then rerun render of buttons to show newly added button.
-    topics.push(sport);
+    topics.push(pic);
     $("#gif-input").val(" ");
     renderButtons();
   });
 
 
-  //on click entire document to cover all elements named "sport" and run display function
+  //on click entire document to cover all elements named "topic" and run display function
   $(document).on("click", ".topic", displayInfo);
 
   //run function to display all buttons on startup
