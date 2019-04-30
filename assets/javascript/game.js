@@ -68,9 +68,7 @@ $(document).ready(function () {
     });
 
   }
-
   //create buttons out of array indexes - gets information from JSON
-
   function renderButtons() {
 
     //delete original array of buttons everytime renders so they do not keep repeating
