@@ -90,7 +90,7 @@ $(document).ready(function () {
     }
   }
 
-  //on click event to add an additional sport button when submitted - push input to array.
+  //on click event to add an additional gif button when submitted - push input to array.
 
   $("#addGif").on("click", function (event) {
     event.preventDefault();
