@@ -103,7 +103,7 @@
   });
 
 
-  //on click entire document to cover all elements named "sport" and run display function
+  //on click entire document to cover all elements named "topic" and run display function
   $(document).on("click", ".topic", displayInfo);
 
   //run function to display all buttons on startup
